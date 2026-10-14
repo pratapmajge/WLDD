@@ -7,6 +7,11 @@ export interface ISubmission extends Document {
   views: number;
   payout: number;
   previousPayout: number;
+  viewHistory: {
+    views: number;
+    payout: number;
+    timestamp: Date;
+  }[];
   createdAt: Date;
   updatedAt: Date;
 }
@@ -36,6 +41,20 @@ const submissionSchema = new Schema<ISubmission>({
     default: 0,
     min: 0
   },
+  viewHistory: [{
+    views: {
+      type: Number,
+      required: true
+    },
+    payout: {
+      type: Number,
+      required: true
+    },
+    timestamp: {
+      type: Date,
+      default: Date.now
+    }
+  }],
   previousPayout: {
     type: Number,
     default: 0,

@@ -22,8 +22,8 @@ export default function Signup() {
         role
       });
 
-      localStorage.setItem('token', response.data.token);
-      localStorage.setItem('user', JSON.stringify(response.data.user));
+      sessionStorage.setItem('token', response.data.token);
+      sessionStorage.setItem('user', JSON.stringify(response.data.user));
 
       if (response.data.user.role === 'brand') {
         router.push('/brand/dashboard');
@@ -36,12 +36,15 @@ export default function Signup() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-      <div className="max-w-md w-full bg-white p-8 rounded-lg shadow">
-        <h2 className="text-2xl font-bold text-center mb-6">Sign Up</h2>
+    <div className="min-h-screen flex items-center justify-center px-4">
+      <div className="max-w-md w-full card">
+        <h2 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          Create Account
+        </h2>
+        <p className="text-center text-gray-600 mb-6">Join Meme'd today</p>
         
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg mb-4">
             {error}
           </div>
         )}
@@ -55,7 +58,7 @@ export default function Signup() {
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
               required
             />
           </div>
@@ -68,7 +71,7 @@ export default function Signup() {
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
               required
             />
           </div>
@@ -81,7 +84,7 @@ export default function Signup() {
               type="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
               required
             />
           </div>
@@ -93,7 +96,7 @@ export default function Signup() {
             <select
               value={role}
               onChange={(e) => setRole(e.target.value as 'brand' | 'creator')}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="input-field"
             >
               <option value="creator">Creator</option>
               <option value="brand">Brand</option>
@@ -102,17 +105,17 @@ export default function Signup() {
 
           <button
             type="submit"
-            className="w-full py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+            className="btn-primary w-full"
           >
             Sign Up
           </button>
         </form>
 
-        <p className="text-center mt-4 text-gray-600">
+        <p className="text-center mt-6 text-gray-600">
           Already have an account?{' '}
           <button
             onClick={() => router.push('/login')}
-            className="text-blue-600 hover:text-blue-700"
+            className="text-blue-600 hover:text-purple-600 font-medium transition-colors"
           >
             Login
           </button>

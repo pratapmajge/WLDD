@@ -130,12 +130,40 @@ router.patch('/:id/views', async (req, res) => {
     submission.payout = newPayout;
     submission.previousPayout = newPayout;
     submission.views = views;
+    
+    // Add to view history
+    submission.viewHistory.push({
+      views: views,
+      payout: newPayout,
+      timestamp: new Date()
+    });
+    
     await submission.save();
 
     res.json(submission);
   } catch (error) {
     console.error('Update views error:', error);
     res.status(500).json({ error: 'Server error updating views' });
+  }
+});
+
+// Get view history for a submission (creator only)
+router.get('/:id/history', auth, requireRole('creator'), async (req: AuthRequest, res) => {
+  try {
+    const submission = await Submission.findById(req.params.id);
+    if (!submission) {
+      return res.status(404).json({ error: 'Submission not found' });
+    }
+
+    // Check if user owns this submission
+    if (submission.creatorId.toString() !== req.userId) {
+      return res.status(403).json({ error: 'Access denied' });
+    }
+
+    res.json(submission.viewHistory || []);
+  } catch (error) {
+    console.error('Get view history error:', error);
+    res.status(500).json({ error: 'Server error fetching view history' });
   }
 });
 
